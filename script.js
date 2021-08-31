@@ -17,18 +17,23 @@ const createScene = function () {
     
 
     const sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {}, scene)
-    sphere.position.y = 20
-    const largeGround = BABYLON.MeshBuilder.CreateGroundFromHeightMap("largeGround", "height_map.png", 
-    {width:150, height:150, subdivisions: 200, minHeight:0, maxHeight: 10});
+    sphere.position.y = 100
+    //const largeGround = BABYLON.MeshBuilder.CreateGroundFromHeightMap("largeGround", "height_map.png", 
+    //{width:150, height:150, subdivisions: 200, minHeight:0, maxHeight: 10});
+
+    var ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "height_map.png", 200, 200, 50, 0, 30, scene, false, function () {
+    ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.HeightmapImpostor, { mass: 0 });
+    });
+    ground
     
     const grass = new BABYLON.StandardMaterial("grass", scene)
     grass.diffuseTexture = new BABYLON.Texture("grass.png")
-    largeGround.material = grass;
+    ground.material = grass;
     
-    largeGround.position.y = -5
+    ground.position.y = -5
 
     sphere.physicsImpostor = new BABYLON.PhysicsImpostor(sphere, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: .9}, scene)
-    //largeGround.physicsImpostor = new BABYLON.PhysicsImpostor(largeGround, BABYLON.PhysicsImpostor.MeshImpostor, {mass: 0, restitution: .9}, scene)
+    
 
     return scene;
 };
