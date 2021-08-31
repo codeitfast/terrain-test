@@ -9,14 +9,15 @@ const createScene = function () {
     var physicsPlugin = new BABYLON.CannonJSPlugin()
     scene.enablePhysics(gravityVector, physicsPlugin)
 
-    const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 15, new BABYLON.Vector3(0, 5, 0));
+    var camera = new BABYLON.ArcRotateCamera("Camera", 10, Math.PI/4, 50, BABYLON.Vector3.Zero(), scene);
+
     camera.attachControl(canvas, true);
     const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 0, 0));
   
     
 
     const sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {}, scene)
-    sphere.position.y = 10
+    sphere.position.y = 20
     const largeGround = BABYLON.MeshBuilder.CreateGroundFromHeightMap("largeGround", "height_map.png", 
     {width:150, height:150, subdivisions: 200, minHeight:0, maxHeight: 10});
     
