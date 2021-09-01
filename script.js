@@ -10,39 +10,48 @@ const createScene = function () {
     scene.enablePhysics(gravityVector, physicsPlugin)
 
     //var camera = new BABYLON.ArcRotateCamera("Camera", 10, Math.PI/4, 50, BABYLON.Vector3.Zero(), scene);
-    var camera = new BABYLON.FollowCamera("Camera", new BABYLON.Vector3(0, 10, 0), scene);
-    camera.followRadius = 10;
-    camera.attachControl(canvas, true)
-    camera.cameraAcceleration = .01
-
-
+     var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0.8, 200, BABYLON.Vector3.Zero(), scene);
+    camera.lowerBetaLimit = 0.1;
+    camera.upperBetaLimit = (Math.PI / 2) * 0.9;
+    camera.lowerRadiusLimit = 30;
+    camera.upperRadiusLimit = 300;
     camera.attachControl(canvas, true);
     const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 0, 0));
+    
+    const rubber = new BABYLON.StandardMaterial("rubber", scene)
+    rubber.diffuseTexture = new BABYLON.Texture("coin_texture.jpg")
+    const grass = new BABYLON.StandardMaterial("grass", scene)
+    grass.diffuseTexture = new BABYLON.Texture("grass.png")
   
     
+    function makeSphere(){
+      const sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameterX: 5, diameterY: 5, diameterZ: 5}, scene)
+      sphere.position.y = 100
+      sphere.position.x += Math.random(0,1)*100-50
+      sphere.position.z += Math.random(0, 1) * 100-50
+      sphere.physicsImpostor = new BABYLON.PhysicsImpostor(sphere, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: .9}, scene)
+      sphere.material = rubber;
+    }
+    //camera.lockedTarget = sphere;
 
-    const sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameterX: 5, diameterY: 5, diameterZ: 5}, scene)
-    sphere.rotation.z = .5
-    sphere.position.y = 100
-    camera.lockedTarget = sphere;
-
+    for(var i = 0; i < 100; i ++){
+      makeSphere()
+    }
 
     var ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "height_map.png", 200, 200, 200, 0, 30, scene, false, function () {
     ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.HeightmapImpostor, { mass: 0 });
     });
     ground
     
-    const grass = new BABYLON.StandardMaterial("grass", scene)
-    grass.diffuseTexture = new BABYLON.Texture("grass.png")
+    
     ground.material = grass;
 
-    const rubber = new BABYLON.StandardMaterial("rubber", scene)
-    rubber.diffuseTexture = new BABYLON.Texture("coin_texture.jpg")
-    sphere.material = rubber;
+    
+    
     
     ground.position.y = -5
 
-    sphere.physicsImpostor = new BABYLON.PhysicsImpostor(sphere, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: .9}, scene)
+    //sphere.physicsImpostor = new BABYLON.PhysicsImpostor(sphere, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: .9}, scene)
     
 
     return scene;
