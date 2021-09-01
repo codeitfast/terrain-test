@@ -5,7 +5,7 @@ const engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engi
 const createScene = function () {
 
     const scene = new BABYLON.Scene(engine);
-    const gravityVector = new BABYLON.Vector3(0, -9.81, 0)
+    const gravityVector = new BABYLON.Vector3(0, -50, 0)
     var physicsPlugin = new BABYLON.CannonJSPlugin()
     scene.enablePhysics(gravityVector, physicsPlugin)
 
@@ -26,33 +26,31 @@ const createScene = function () {
     
     function makeSphere(){
       const sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameterX: 5, diameterY: 5, diameterZ: 5}, scene)
-      sphere.position.y = 100
-      sphere.position.x += Math.random(0,1)*100-50
-      sphere.position.z += Math.random(0, 1) * 100-50
+      sphere.position.y = 50
+      sphere.position.x += Math.random(0,5)-4
+      sphere.position.z += Math.random(0, 5)-4
       sphere.physicsImpostor = new BABYLON.PhysicsImpostor(sphere, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: .9}, scene)
       sphere.material = rubber;
     }
     //camera.lockedTarget = sphere;
+    
+    
 
-    for(var i = 0; i < 100; i ++){
-      makeSphere()
-    }
-
-    var ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "height_map.png", 200, 200, 200, 0, 30, scene, false, function () {
+    var ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "height_map.png", 200, 200, 300, 0, 50, scene, false, function () {
     ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.HeightmapImpostor, { mass: 0 });
     });
     ground
     
     
-    ground.material = grass;
-
-    
-    
-    
+    ground.material = grass;    
     ground.position.y = -5
 
-    //sphere.physicsImpostor = new BABYLON.PhysicsImpostor(sphere, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: .9}, scene)
-    
+    var tick = 0;
+    scene.registerBeforeRender(function(){
+
+      if((tick++ % 30)) return;
+      makeSphere()
+    })
 
     return scene;
 };
