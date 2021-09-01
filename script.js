@@ -21,7 +21,7 @@ const createScene = function () {
   
     
 
-    const sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameterX: 5, diameterY: 10, diameterZ: 5}, scene)
+    const sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameterX: 5, diameterY: 5, diameterZ: 5}, scene)
     sphere.rotation.z = .5
     sphere.position.y = 100
     camera.lockedTarget = sphere;
