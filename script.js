@@ -26,16 +26,17 @@ const createScene = function () {
     
     function makeSphere(){
       const sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameterX: 5, diameterY: 5, diameterZ: 5}, scene)
-      sphere.position.y = 150 + (Math.random(0,1)*5)
-      sphere.position.x += (Math.random(0,1)-.5)*2
-      sphere.position.z += (Math.random(0, 1)-.5)*2      sphere.physicsImpostor = new BABYLON.PhysicsImpostor(sphere, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: .9}, scene)
+      sphere.position.y = 150 + Math.random(0,1)*5
+      sphere.position.x += (Math.random(0,1)-.5)
+      sphere.position.z += (Math.random(0, 1)-.5)
+      sphere.physicsImpostor = new BABYLON.PhysicsImpostor(sphere, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: .9}, scene)
       sphere.material = rubber;
     }
     //camera.lockedTarget = sphere;
     
     
 
-    var ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "height_map.png", 200, 200, 300, 0, 50, scene, false, function () {
+    var ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "height_map.png", 200, 200, 10, 0, 50, scene, false, function () {
     ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.HeightmapImpostor, { mass: 0 });
     });
     ground
