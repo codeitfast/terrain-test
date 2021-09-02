@@ -26,10 +26,9 @@ const createScene = function () {
     
     function makeSphere(){
       const sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameterX: 5, diameterY: 5, diameterZ: 5}, scene)
-      sphere.position.y = 50
-      sphere.position.x += Math.random(0,5)-4
-      sphere.position.z += Math.random(0, 5)-4
-      sphere.physicsImpostor = new BABYLON.PhysicsImpostor(sphere, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: .9}, scene)
+      sphere.position.y = 150 + (Math.random(0,1)*5)
+      sphere.position.x += (Math.random(0,1)-.5)*2
+      sphere.position.z += (Math.random(0, 1)-.5)*2      sphere.physicsImpostor = new BABYLON.PhysicsImpostor(sphere, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1, restitution: .9}, scene)
       sphere.material = rubber;
     }
     //camera.lockedTarget = sphere;
@@ -46,10 +45,12 @@ const createScene = function () {
     ground.position.y = -5
 
     var tick = 0;
+    var sphereAmount = 0
     scene.registerBeforeRender(function(){
 
-      if((tick++ % 30)) return;
-      makeSphere()
+      if((tick++ % 2)) return;
+      if(sphereAmount < 50) makeSphere();
+      sphereAmount ++
     })
 
     return scene;
